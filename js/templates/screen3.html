@@ -1,0 +1,48 @@
+<script type="text/template" id="screen3-template"> 
+	<div class="modal3">
+		<div class="modal_container3">
+			<div class="modal-top-menu"></div>
+			<div style="clear: both"></div>
+			<div id="modal3-avatar">
+				<div id="modal3-status" style="background: <%= status ? '#13c003' : 'red' %>"></div>
+				<img src="<%= avatar %>" />
+			</div>
+			<div id="modal3-phone"><%= phoneNumber %></div>
+			<div id="modal3-call-type-time">
+				<%= callType %> call: <strong><span id="mins">00</span>:<span id="secs">00</span><%= callPrice != "" ? ' - ' + callPrice : '' %></strong>
+			</div>
+			<div style="clear: both"></div>
+			<div id="modal3-menu">
+
+				<ul>
+					<li><div id="button-mute">mute</div></li>
+					<li><div id="button-keypad">keypad</div></li>
+					<li><div id="button-profile">profile</div></li>
+					<li><div id="button-message">message</div></li>
+				</ul>
+
+
+				<div id="modal3-keypad-wrapper">
+					<div id="modal3-keypad">
+						<div class="modal3-number-button">1</div>
+						<div class="modal3-number-button">2</div>
+						<div class="modal3-number-button">3</div>
+						<div class="modal3-number-button">4</div>
+						<div class="modal3-number-button">5</div>
+						<div class="modal3-number-button">6</div>
+						<div class="modal3-number-button">7</div>
+						<div class="modal3-number-button">8</div>
+						<div class="modal3-number-button">9</div>
+						<div class="modal3-number-button">*</div>
+						<div class="modal3-number-button">0</div>
+						<div class="modal3-number-button">#</div>						
+						<div style="clear: both"></div>
+					</div>
+				</div>
+
+			</div>
+			<div id="modal3-stop-button"></div>
+			<div id="model3-footer"></div>
+		</div>
+	</div>
+</script>

@@ -1,0 +1,15 @@
+<script type="text/template" id="screen2-template"> 
+	<div class="modal2">
+		<div class="modal_container2">
+			<div class="modal-top-menu"></div>
+			<div style="clear: both"></div>
+			<div id="modal2-avatar">
+				<div id="modal2-status" style="background: <%= status ? '#13c003' : 'red' %>"></div>
+				<img src="<%= avatar %>" />
+			</div>			
+			<div id="modal2-phone"><%= phoneNumber %></div>
+			<div id="modal2-call-type"><%= callDirection %> call to <%= callType %></div>
+			<div id="modal2-stop-button"></div>
+		</div>
+	</div>
+</script>

@@ -1,0 +1,17 @@
+{
+  "name": "caller widget",
+  "version": "1.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "latest",
+	"jquery.inputmask": "latest",
+    "underscore": "latest",
+     "backbone": "latest"
+  }
+}
