@@ -48,21 +48,21 @@ var RecentCall = Backbone.Model.extend({
 var RecentCallView = Backbone.View.extend({ 
 
 	tagName : "li",
-	
-	// для конвертации Date => String
-	dateOptions: {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric'
+
+	// конвертатор Date => String
+	Date2String: function(date) {
+		var monthNames = ["January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"];
+		return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
 	},
  
 	render: function() {
-		// нормализуем дату, потому что даты хранятся в виде некорркетных строк (не тот формат)
+		// нормализуем дату, потому что даты хранятся в виде некорректных строк (не тот формат)
 		var tmp = this.model.get('date').replace(' ', 'T');		
 		// получим Date
 		var dt = new Date(tmp);	
 		// ренедерим элемент
-		this.el.innerHTML = '<span class="list-phone">' + this.model.get('phone') + '</span><br/><span class="list-date">' + dt.toLocaleString("en-US", this.dateOptions) + '</span>';
+		this.el.innerHTML = '<span class="list-phone">' + this.model.get('phone') + '</span><br/><span class="list-date">' + this.Date2String(dt) + '</span>';
 		return this;
 	},
 	
@@ -79,7 +79,7 @@ var RecentCallView = Backbone.View.extend({
 //==============================================================================
 var RecentCallsCollection = Backbone.Collection.extend({
     model: RecentCall,
-	url: '/echo/json/'
+	url: '/'
 });
 
 // view
@@ -152,7 +152,7 @@ var Screen0 = Backbone.View.extend({
 		
 		// значение по умолчанию
 		widget.abonentName = '';
-		widget.abonentAvatar = 'img/template/avatar.png';
+		widget.abonentAvatar = 'img/caller/avatar.png';
 		widget.abonentStatus = false;
 		
 		// поиск в адресной книге
@@ -937,20 +937,35 @@ var Screen4 = Backbone.View.extend({
 //==============================================================================
 var WidgetView = Backbone.View.extend({
 
+	// вешаем на все body, так как нужно глобально ловить
+	// клики и нажатия на клавиши
 	el: 'body',
+
+	// в конструкторе сразу грузим все картинки виджета
+	initialize: function() {
+		this.preloadImages(
+			'img/caller/avatar.png',
+			'img/caller/extend-button.png',
+			'img/caller/screen3-buttons.png',
+			'img/caller/stop-button.png',
+			'img/caller/top-menu.png',
+			'img/caller/loader.gif'
+		);
+	},
 	
 	// все View наших экранов сразу храним в памяти
 	Screens: [
-		new Screen0(),
-		new Screen1(),
-		new Screen2(),
-		new Screen3(),
-		new Screen4()
+		new Screen0(), // набор номера, история звонков (screen0.html)
+		new Screen1(), // выбор тарифа для звонка (screen1.html)
+		new Screen2(), // вызов абонента, соединение с ним (screen2.html)
+		new Screen3(), // соединение установлено, панель (screen3.html)
+		new Screen4()  // свернутая панель установленного соединения (screen4.html)
 	],
 	
-	// текущий экран
+	// текущий экран, который показан в виджете
 	CurrentScreenNo: -1,
 	
+	// функция показывает экран с номером "num"
 	showScreen: function(num) {
 		// запомним номер текущего экрана
 		this.CurrentScreenNo = num;
@@ -961,15 +976,16 @@ var WidgetView = Backbone.View.extend({
 	//--------------------------------------------------------------------------
 	// данные которые передаются между экранами внутри виджета
 	//--------------------------------------------------------------------------
-	phoneNumber: '',
-	callDirection: 'Outgoing',
-	callType: 'Sendway',
-	callPrice: '',
+	phoneNumber: '', // номер телефона абонента, формат: +7(xxx) xxx-xx-xx
+	callDirection: 'Outgoing', // направление звонка
+	callType: 'Sendway', // тариф звонка
+	callPrice: '', // стоимость звонка, формат: xxx.xx - VAL
 	
-	abonentAvatar: '',
-	abonentName: '',
-	abonentStatus: false,
+	abonentAvatar: '', // путь до картинки аватара абонента
+	abonentName: '', // наименование абонента в адресной книге
+	abonentStatus: false, // статус абонента в адресной книге
 	
+	// функция получения стоимости звонка
 	getPrice: function(callback) {
 		
 		// эмуляция асинхронности
@@ -982,6 +998,7 @@ var WidgetView = Backbone.View.extend({
 		}, 100);
 	},
 	
+	// функция получения истории звонков
 	getRecentCalls: function(callback) {
 		
 		// эмуляция асинхронности
@@ -993,9 +1010,10 @@ var WidgetView = Backbone.View.extend({
 			if (callback && typeof(callback) === "function") callback(data);
 		}, 100);
 	},	
-	//--------------------------------------------------------------------------
-	//--------------------------------------------------------------------------
 
+	//--------------------------------------------------------------------------
+	// события виджета и их обработчики
+	//--------------------------------------------------------------------------
 	events: {
 		'click div#button-phone': 'StartWidget',
 		'click': 'HideWidget',
@@ -1054,7 +1072,8 @@ var WidgetView = Backbone.View.extend({
 		
 		return false;
 	},
-	
+
+	// перехват всех нажатий клавиш на документе	
 	KeyProxy: function(e) {
 		
 		// перехват всех нажатий клавиш на первом экране
@@ -1083,6 +1102,15 @@ var WidgetView = Backbone.View.extend({
 			
 			return true;
 		}
+	},
+
+	//--------------------------------------------------------------------------
+	// служебные функции
+	//--------------------------------------------------------------------------
+	// предварительная загрузка изображений
+	preloadImages: function() {
+		for (var i = 0; i < arguments.length; i++)
+			new Image().src = arguments[i];
 	}
 });
 

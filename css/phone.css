@@ -141,10 +141,20 @@ a {
 	background: white;
 	top: 62px;
 	right: 252px;
-	border-radius: 4px;
 	border: 1px solid #b2c6cd;
+
+	z-index: 900;
+
+	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
+    -moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
 	box-shadow: 3px 3px 3px rgba(0,0,0,0.2);
-	z-index: 100;
+	behavior: url(css/ie-css3.htc);
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 #widget-block::before, #widget-block::after {
@@ -165,14 +175,20 @@ a {
  ***********************************/
 #widget-screen0 {
 	display: none;
+	z-index: 1000;
 }
 
 #recent-calls {	
 	float: left;
 	width: 173px;
 	height: 265px;
-	border-radius: 4px 0 0 4px;
 	background: #f9f9f9;
+
+	-moz-border-radius: 4px 0 0 4px;
+	-webkit-border-radius: 4px 0 0 4px;
+	-khtml-border-radius: 4px 0 0 4px;
+	border-radius: 4px 0 0 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 #recent-calls h3 {
@@ -208,10 +224,15 @@ a {
 	float: left;
 	width: 170px;
 	height: 50px;
-	border-radius: 0 4px 0 0;
 	border-bottom: 1px solid #e1eef3;
 	border-left: 1px solid #e1eef3;
 	text-align: center;
+
+	-moz-border-radius: 0 4px 0 0;
+	-webkit-border-radius: 0 4px 0 0;
+	-khtml-border-radius: 0 4px 0 0;
+	border-radius: 0 4px 0 0;
+	behavior: url(css/border-radius.htc);
 }
 
 #input-phone-number {
@@ -248,7 +269,6 @@ a {
 	float: left;
 	width: 170px;
 	height: 42px;
-	border-radius: 0 0 4px 0;
 	border-left: 1px solid #e1eef3;		
 	line-height: 42px;
 	text-align: center;
@@ -256,6 +276,11 @@ a {
 	cursor: pointer;
 	font-weight: bold;
 
+	-moz-border-radius: 0 0 4px 0;
+	-webkit-border-radius: 0 0 4px 0;
+	-khtml-border-radius: 0 0 4px 0;
+	border-radius: 0 0 4px 0;
+	behavior: url(css/border-radius.htc);
 }
 #call-button:hover {
 	background: #f9f9f9;
@@ -273,7 +298,7 @@ a {
 	color: white !important;
 }
 .call-button-load {
-	background: url(../img/loader.gif) no-repeat center center #4897d8 !important;
+	background: url(../img/caller/loader.gif) no-repeat center center #4897d8 !important;
 }
 
 /**
@@ -282,6 +307,7 @@ a {
 #widget-screen1 {
 	display: none;
 	margin: 10px;
+	z-index: 1001;
 }
 
 #calling-number {
@@ -305,7 +331,6 @@ a {
 	float: left;
 	width: 165px;
 	height: 32px;
-	border-radius: 4px;
 	background: #4496db;
 	margin: 15px 0 0 90px;
 	color: white;
@@ -314,13 +339,18 @@ a {
 	text-align: center;
 	line-height: 32px;
 	cursor: pointer;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 .empty-button {
 	float: left;
 	width: 165px;
 	height: 32px;
-	border-radius: 4px;
 	background: white;
 	border: 1px solid #d3d7da;
 	margin: 15px 0 0 90px;
@@ -330,6 +360,12 @@ a {
 	text-align: center;
 	line-height: 32px;
 	cursor: pointer;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 .empty-button:hover {
@@ -341,11 +377,12 @@ a {
  ***********************************/
  #widget-block2 {
 	display: none;
-	z-index: 101;
+	z-index: 9999;
 }
 
 #widget-screen2 {
 	display: none;
+	z-index: 10002;
 }
  
 .fixed-overlay {
@@ -365,7 +402,7 @@ a {
 	width: 32px;
 	height: 32px;
 	cursor: pointer;
-	background: url(../img/template/top-menu.png) no-repeat center center;
+	background: url(../img/caller/top-menu.png) no-repeat center center;
 }
 
 .modal2 {
@@ -380,15 +417,29 @@ a {
 	background-color: #fff;
 	width: 300px;
 	height: 340px;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
 	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal2-avatar {
 	margin: 10px 0 0 105px;
 	width: 90px;
 	height: 90px;
-	border-radius: 50%;
+	
+	-webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2);
 	box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	behavior: url(css/ie-css3.htc);
+
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-khtml-border-radius: 50%;
+	border-radius: 50%;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal2-avatar img {
@@ -405,7 +456,12 @@ a {
 	top: 68px;
 	border: 2px solid white;
 	background: #ccc;
-	border-radius: 50%;	
+
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-khtml-border-radius: 50%;
+	border-radius: 50%;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal2-phone {
@@ -428,7 +484,7 @@ a {
 	margin: 30px 0 0 123px;
 	width: 55px;
 	height: 55px;
-	background: url(../img/template/stop-button.png) no-repeat center center;
+	background: url(../img/caller/stop-button.png) no-repeat center center;
 	cursor: pointer;
 }
 
@@ -438,6 +494,7 @@ a {
  ***********************************/
 #widget-screen3 {
 	display: none;
+	z-index: 10003;
 }
 
 .modal3 {
@@ -451,7 +508,12 @@ a {
 .modal_container3 {
 	background-color: #fff;
 	width: 336px;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
 	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal3-avatar {
@@ -459,7 +521,12 @@ a {
 	margin: 0 0 0 25px;
 	width: 60px;
 	height: 60px;
+
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-khtml-border-radius: 50%;
 	border-radius: 50%;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal3-avatar img {
@@ -476,7 +543,12 @@ a {
 	top: 44px;
 	border: 2px solid white;
 	background: #ccc;
-	border-radius: 50%;	
+
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-khtml-border-radius: 50%;
+	border-radius: 50%;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal3-phone {
@@ -521,18 +593,21 @@ a {
 	text-align: center;
 	font-size: 100%;	
 	vertical-align: bottom;
-	background-image: url(../img/template/screen3-buttons.png);
+	background-image: url(../img/caller/screen3-buttons.png);
 	background-repeat: no-repeat;
+
 	opacity: 0.5;
 }
 
 #modal3-menu li div:hover {
 	color: #4496db;
+
 	opacity: 1;
 }
 
 .modal3-button-active {
 	color: #4496db !important;
+
 	opacity: 1 !important;
 }
 
@@ -580,8 +655,13 @@ a {
 	font-size: 120%;
 	color: #3d464d;
 	cursor: pointer;
-	border-radius: 4px;	
 	padding: 1px;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 .modal3-number-button:hover {
 	padding: 0;
@@ -593,7 +673,7 @@ a {
 	margin: 26px 0 0 141px;
 	width: 55px;
 	height: 55px;
-	background: url(../img/template/stop-button.png) no-repeat center center;
+	background: url(../img/caller/stop-button.png) no-repeat center center;
 	cursor: pointer;
 }
 
@@ -615,12 +695,17 @@ a {
 	margin-top: -40px;	
 	width: 340px;
 	height: 80px;
-	border-radius: 4px;
 	background: #eef7ff;
 	border: 1px solid #4897d8;
 	cursor: pointer;
 	
-	z-index: 0;
+	z-index: 10004;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	behavior: url(css/border-radius.htc);
 }
 
 #modal4-phone {
@@ -646,5 +731,5 @@ a {
 	height: 54px;
 	margin-top: 0px;
 	border-left: 1px solid #9bc7eb;
-	background: url(../img/template/extend-button.png) no-repeat center center;
+	background: url(../img/caller/extend-button.png) no-repeat center center;
 }
