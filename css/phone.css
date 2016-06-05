@@ -155,6 +155,8 @@ a {
 	-khtml-border-radius: 4px;
 	border-radius: 4px;
 	behavior: url(css/border-radius.htc);
+
+	-webkit-transform: translate3d(0,0,0);
 }
 
 #widget-block::before, #widget-block::after {
@@ -176,6 +178,7 @@ a {
 #widget-screen0 {
 	display: none;
 	z-index: 1000;
+	-webkit-transform: translate3d(0,0,0);
 }
 
 #recent-calls {	
@@ -308,6 +311,8 @@ a {
 	display: none;
 	margin: 10px;
 	z-index: 1001;
+
+	-webkit-transform: translate3d(0,0,0);
 }
 
 #calling-number {
@@ -378,6 +383,8 @@ a {
  #widget-block2 {
 	display: none;
 	z-index: 9999;
+
+	-webkit-transform: translate3d(0,0,0);
 }
 
 #widget-screen2 {
@@ -495,6 +502,8 @@ a {
 #widget-screen3 {
 	display: none;
 	z-index: 10003;
+
+	-webkit-transform: translate3d(0,0,0);
 }
 
 .modal3 {
@@ -706,6 +715,8 @@ a {
 	-khtml-border-radius: 4px;
 	border-radius: 4px;
 	behavior: url(css/border-radius.htc);
+
+	-webkit-transform: translate3d(0,0,0);
 }
 
 #modal4-phone {
