@@ -502,8 +502,6 @@ a {
 #widget-screen3 {
 	display: none;
 	z-index: 10003;
-
-	-webkit-transform: translate3d(0,0,0);
 }
 
 .modal3 {
