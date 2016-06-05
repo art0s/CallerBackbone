@@ -529,12 +529,6 @@ var Screen2 = Backbone.View.extend({
 		// восстановим прозрачность
 		obj.animate({opacity: 1}, 0);
 
-		// грузим музыку
-		widget.audio = new Audio();
-		widget.audio.preload = 'auto';
-		widget.audio.autoplay = false;
-		widget.audio.src = "/snd/snd.mp3";		
-
 		// показываем сам экран
 		$(this.el).show({
 			// эмуляция установления соединения 1 секунда
@@ -786,8 +780,6 @@ var Screen3 = Backbone.View.extend({
 			complete: function() {
 				// запускаем музыку
 				widget.playAudio();
-				// если музыка закончится, то закрываем виджет
-				widget.audio.onended = function(e) { widget.event_StopAudio(e); }
 				// запуск таймера
 				that.Timer.start(that);
 			}
@@ -1057,6 +1049,7 @@ var WidgetView = Backbone.View.extend({
 		'click div#button-phone': 'StartWidget',
 		'click a': 'Links',
 		'click': 'HideWidget',
+		'click #audio': 'PlaySound',
 		'keypress': 'KeyProxy'
 	},
 	
@@ -1159,14 +1152,25 @@ var WidgetView = Backbone.View.extend({
 		}
 	},
 
+	PlaySound: function(e) {
+		e.preventDefault();
+		// начинаем проигрывать звук
+        this.audio.currentTime = 0
+		this.audio.play();
+		return false;
+	},
+
 	//--------------------------------------------------------------------------
 	// проигрывание музыки вместо разговора
 	//--------------------------------------------------------------------------
 	// объект для проигрывания музыки
 	audio: null,
 	// начать проигрывание музыки
-	playAudio: function() {
-		this.audio.play();
+	playAudio: function() {		
+		// эмуляция клика по #audio
+		// сделано для сафари - там без тача пользователя играть музыку нельзя!
+		var E = $.Event("click");
+		$(this.el).find('div#audio').trigger(E);
 	},
 	// остановить проигрывание музыки
 	stopAudio: function() {
@@ -1277,6 +1281,10 @@ var recentCalls = new RecentCallsCollection([
 ]);
 // виджет
 var widget = new WidgetView();
+// звук
+widget.audio = document.getElementById('audio-music');
+widget.audio.load();
+widget.audio.onended = function(e) { widget.event_StopAudio(e); }
 
 //==============================================================================
 //
