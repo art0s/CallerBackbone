@@ -211,7 +211,8 @@ var Screen0 = Backbone.View.extend({
 	// обновление поля ввода с номером телефона
 	UpdatePhoneInput: function(e) {
 
-		e.preventDefault();
+		if (e) e.preventDefault();
+
 		// длина "чистого" номера
 		var obj = $(this.el).find("#input-phone-number").inputmask('unmaskedvalue');
 		var len = obj ? obj.length : 0;
@@ -287,9 +288,12 @@ var Screen0 = Backbone.View.extend({
 			obj.html(CACHE[0]);
 			// панель отрисована - ставим маску для поля ввода
 			obj.find('#input-phone-number').inputmask({"mask": phoneMask});
-			// если был введенный номер - ставим и его
+			// если был введенный номер - ставим и его и делаем проверку поля
 			if (widget.phoneNumber.length)
+			{
 				$(this.el).find('#input-phone-number').val(widget.phoneNumber).trigger('keypress').blur();
+				this.UpdatePhoneInput(false);
+			}
 			
 			// получим асинхронно историю звонков
 			widget.getRecentCalls(function(calls) {
@@ -319,9 +323,12 @@ var Screen0 = Backbone.View.extend({
 				obj.html(CACHE[0]);
 				// панель отрисована - ставим маску для поля ввода
 				obj.find('#input-phone-number').inputmask({"mask": phoneMask});
-				// если был введенный номер - ставим и его
+				// если был введенный номер - ставим и его проверяем поле
 				if (widget.phoneNumber.length)
+				{
 					$(this.el).find('#input-phone-number').val(widget.phoneNumber).trigger('keypress').blur();
+					this.UpdatePhoneInput(false);
+				}
 				
 				// получим асинхронно историю звонков
 				widget.getRecentCalls(function(calls) {
@@ -521,6 +528,13 @@ var Screen2 = Backbone.View.extend({
 		var obj = $(this.el);
 		// восстановим прозрачность
 		obj.animate({opacity: 1}, 0);
+
+		// грузим музыку
+		widget.audio = new Audio();
+		widget.audio.preload = 'auto';
+		widget.audio.autoplay = false;
+		widget.audio.src = "/snd/snd.mp3";		
+
 		// показываем сам экран
 		$(this.el).show({
 			// эмуляция установления соединения 1 секунда
@@ -648,9 +662,14 @@ var Screen3 = Backbone.View.extend({
 	},
 	
 	StopButton: function(e) {
-		e.preventDefault();
+
+		if (e) e.preventDefault();
+
 		// убираем таймер
 		this.Timer.stop();
+
+		// прекращаем проигрывание звука
+		widget.stopAudio();
 		
 		// заносим данные в историю звонка
 		var dt = new Date();
@@ -763,11 +782,18 @@ var Screen3 = Backbone.View.extend({
 		var that = this;
 		$(this.el).show({
 			duration: 0,
-			// запуск таймера
-			complete: function() {that.Timer.start(that);}
+			// окно экрана показано
+			complete: function() {
+				// запускаем музыку
+				widget.playAudio();
+				// если музыка закончится, то закрываем виджет
+				widget.audio.onended = function(e) { widget.event_StopAudio(e); }
+				// запуск таймера
+				that.Timer.start(that);
+			}
 		});
 	},
-	
+
 	//--------------------------------------------------------------------------
 	// отрисовка
 	//--------------------------------------------------------------------------
@@ -829,7 +855,8 @@ var Screen4 = Backbone.View.extend({
 	},	
 	
 	ExtendButton: function(e) {
-		e.preventDefault();
+
+		if(e) e.preventDefault();
 		
 		// перемащаем в нужное место и скрываем блок
 		var obj = $(this.el);
@@ -1063,8 +1090,19 @@ var WidgetView = Backbone.View.extend({
 
 	// клик по ссылкам
 	Links: function(e) {
-		console.log('a');
-		return true;
+
+		e.preventDefault();
+
+		// получем URL запрашиваемой страницы
+		var url = $(e.currentTarget).attr('href');
+
+		// создаем новую запись в истории
+		history.pushState({url:url}, null, url);
+
+		// грузим страницу
+		this.loadPage(url);
+
+		return false;
 	},
 
 	// скрывает виджет при клике вне его области
@@ -1122,13 +1160,76 @@ var WidgetView = Backbone.View.extend({
 	},
 
 	//--------------------------------------------------------------------------
+	// проигрывание музыки вместо разговора
+	//--------------------------------------------------------------------------
+	// объект для проигрывания музыки
+	audio: null,
+	// начать проигрывание музыки
+	playAudio: function() {
+		this.audio.play();
+	},
+	// остановить проигрывание музыки
+	stopAudio: function() {
+		this.audio.pause();
+	},
+	// музыка сама остановилась/закончилась
+	event_StopAudio: function(e) {
+		
+		// если окно в свернутом состоянии - развернем его
+		// потому что нет данных как закрывать виджет при свернутом окне
+		if (this.CurrentScreenNo == 4)
+		{
+			this.Screens[4].ExtendButton(false);
+		}
+
+		// теперь можно выключать виджет через 700 мс
+		var obj = this.Screens[3];
+		setTimeout( function() {
+			obj.StopButton(false);
+		}, 700);
+	},	
+
+	//--------------------------------------------------------------------------
 	// служебные функции
 	//--------------------------------------------------------------------------
 	// предварительная загрузка изображений
 	preloadImages: function() {
 		for (var i = 0; i < arguments.length; i++)
 			new Image().src = arguments[i];
-	}
+	},
+
+	// динамическая загрузка страниц
+	// так как всего две страницы "Главная" и "Пометки"
+	// маршрутизацию я не делал
+    loadPage: function(url) {
+
+		// запомним ссылку
+		var obj = $(this.el).find('div#content-block');
+
+		// если загрузить нужно страницу с пометками
+		if (url === '/notes.html')
+		{
+			$.ajax({
+				url: '/pages' + url,
+				cache: false,
+				success: function(data) {					
+					obj.html(data);
+				}
+			});
+		}
+		else
+		// если такой URL не найден, то это главная страница - пустая
+		if (url == '' || url == '/' || url == null || url == undefined)
+		{
+			$.ajax({
+				url: '/pages/main.html',
+				cache: false,
+				success: function(data) {					
+					obj.html(data);
+				}
+			});
+		}
+    }
 });
 
 //==============================================================================
@@ -1151,7 +1252,7 @@ var addressBook = new AddressBookCollection([
 		"online": true
 	},
 ]);
-// история звонокв
+// история звонков
 var recentCalls = new RecentCallsCollection([
 	{
 		"phone": "+7 (800) 755-68-98",
@@ -1176,4 +1277,29 @@ var recentCalls = new RecentCallsCollection([
 ]);
 // виджет
 var widget = new WidgetView();
+
+//==============================================================================
+//
+// HTML5 API History
+//
+//==============================================================================
+// получим текущий URL из адресной строки браузера
+var loc = window.location ||
+	(event.originalEvent && event.originalEvent.location) ||
+	document.location;
+var thisURL = loc.pathname ? loc.pathname : '/';
+
+// у нас всего две страницы, маршруты не нужны
+var title = thisURL === '' || thisURL === '/' ? 'Home' : 'Notes';
+
+// параметры для текущего состояния
+// data, title, url
+history.replaceState({url:thisURL}, title, thisURL);
+
+// грузим страницу
+widget.loadPage(thisURL);
+
+// подпишемся на обработчик нажатий кнопок браузера назад/вперед 
+$(window).bind('popstate', function(e) { widget.loadPage(history.state.url); });
+
 }});
