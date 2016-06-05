@@ -569,7 +569,7 @@ a {
 
 #modal3-menu {
 	width: 300px;	
-	margin: 24px 18px 0 18px;
+	margin: 24px 18px;
 	border-top: 1px solid #e1eef3;
 	border-bottom: 1px solid #e1eef3;
 }
@@ -670,7 +670,7 @@ a {
 }
 
 #modal3-stop-button {
-	margin: 26px 0 0 141px;
+	margin: 26px auto 0 141px !important;
 	width: 55px;
 	height: 55px;
 	background: url(../img/caller/stop-button.png) no-repeat center center;
@@ -678,7 +678,7 @@ a {
 }
 
 #model3-footer {
-	width: 100%;
+	width: 336px;
 	height: 26px;
 }
 
