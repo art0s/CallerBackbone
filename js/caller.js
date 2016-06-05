@@ -714,6 +714,10 @@ var Screen3 = Backbone.View.extend({
 				var sn = this.timerCount % 60;
 				s = sn < 10 ? '0' + sn : sn;			
 			}
+			// запоминаем расчетные данные, для того что бы при
+			// отрисовки screen4 сразу показать корректный отсчет
+			this.mins = m; this.secs = s;
+
 			// рендеринг в четвертом экране
 			$(this.obj.el).find('span#mins').text(m);
 			$(this.obj.el).find('span#secs').text(s);
@@ -739,7 +743,10 @@ var Screen3 = Backbone.View.extend({
 		
 		stop: function() {
 			clearInterval(this.timerID);
-		}
+		},
+
+		mins: '',
+		secs: ''
 	},	
 	
 	//--------------------------------------------------------------------------
@@ -901,7 +908,9 @@ var Screen4 = Backbone.View.extend({
 			var arg = {
 				phoneNumber: widget.abonentName != '' ? widget.abonentName : widget.phoneNumber,
 				callType: widget.callType,
-				callPrice: widget.callPrice
+				callPrice: widget.callPrice,
+				mins: widget.Screens[3].Timer.mins,
+				secs: widget.Screens[3].Timer.secs
 			};								
 			// сам рендеринг
 			obj.html(CACHE[4](arg));
@@ -921,7 +930,9 @@ var Screen4 = Backbone.View.extend({
 				var arg = {
 					phoneNumber: widget.abonentName != '' ? widget.abonentName : widget.phoneNumber,
 					callType: widget.callType,
-					callPrice: widget.callPrice
+					callPrice: widget.callPrice,
+					mins: widget.Screens[3].Timer.mins,
+					secs: widget.Screens[3].Timer.secs
 				};					
 				// сам рендеринг
 				obj.html(CACHE[4](arg));
@@ -949,7 +960,8 @@ var WidgetView = Backbone.View.extend({
 			'img/caller/screen3-buttons.png',
 			'img/caller/stop-button.png',
 			'img/caller/top-menu.png',
-			'img/caller/loader.gif'
+			'img/caller/loader.gif',
+			'img/avatars/img.png'
 		);
 	},
 	
