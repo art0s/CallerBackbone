@@ -1028,6 +1028,7 @@ var WidgetView = Backbone.View.extend({
 	//--------------------------------------------------------------------------
 	events: {
 		'click div#button-phone': 'StartWidget',
+		'click a': 'Links',
 		'click': 'HideWidget',
 		'keypress': 'KeyProxy'
 	},
@@ -1060,17 +1061,21 @@ var WidgetView = Backbone.View.extend({
 		return false;
 	},
 
+	// клик по ссылкам
+	Links: function(e) {
+		console.log('a');
+		return true;
+	},
+
 	// скрывает виджет при клике вне его области
 	HideWidget: function(e) {
-		
-		e.preventDefault();
 		
 		// если первый или второй экран - плавно скрываем
 		if (this.CurrentScreenNo == 0 || this.CurrentScreenNo == 1)
 		{
 			this.Screens[this.CurrentScreenNo].hide();
 			this.CurrentScreenNo = -1;
-			return false;
+			return true;
 		}
 		
 		// если у нас показан четвертый экран - показываем пятый :)
@@ -1079,10 +1084,10 @@ var WidgetView = Backbone.View.extend({
 			// раз дошли до сих пор, то 100% кликнули вне четвертого экрана
 			// так как на четвертом экране стоит фильтр кликов e.stopPropagation();
 			this.Screens[3].TopMenu(e);
-			return false;
+			return true;
 		}
-		
-		return false;
+
+		return true;
 	},
 
 	// перехват всех нажатий клавиш на документе	
